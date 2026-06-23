@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Portal de Conscientização</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Partículas de fundo */
+    .bg-particles {
+      position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
+    }
+    .bg-particles span {
+      position: absolute;
+      display: block;
+      width: 4px; height: 4px;
+      background: rgba(255,255,255,.15);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+    .login-page { position: relative; }
+    .login-card { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+  <div class="login-page">
+    <div class="bg-particles" id="particles"></div>
+
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="logo-mark">
+          <!-- Shield icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4.26l5 2.22V11c0 3.54-2.35 6.89-5 8.07-2.65-1.18-5-4.53-5-8.07V7.48l5-2.22z"/>
+          </svg>
+        </div>
+        <h1 id="loginTitle">Portal de Conscientização</h1>
+        <p>Área Administrativa · Segurança da Informação</p>
+      </div>
+
+      <form class="login-form" onsubmit="doLogin(event)">
+        <div id="loginError" class="login-error">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.553.553 0 0 1-1.1 0L7.1 4.995z"/>
+          </svg>
+          Usuário ou senha incorretos.
+        </div>
+
+        <div class="form-group">
+          <label for="username">Usuário</label>
+          <input type="text" id="username" class="form-control" placeholder="Digite seu usuário" autocomplete="username" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+
+        <button type="submit" class="btn-primary" id="loginBtn">Entrar</button>
+      </form>
+
+      <div class="login-footer">
+        &copy; 2025 · Plataforma de Simulação de Phishing Interno<br>
+        Acesso restrito a usuários autorizados
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/data.js"></script>
+  <script>
+    /* Se já logado, vai ao dashboard */
+    if (Auth.isLoggedIn()) window.location.href = 'dashboard.html';
+
+    /* Partículas decorativas */
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 18; i++) {
+      const s = document.createElement('span');
+      s.style.cssText = `left:${Math.random()*100}%;width:${2+Math.random()*4}px;height:${2+Math.random()*4}px;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*8}s`;
+      container.appendChild(s);
+    }
+
+    /* Título dinâmico */
+    const settings = Data.getSettings();
+    if (settings.campaignName) document.getElementById('loginTitle').textContent = settings.campaignName;
+    if (settings.logoText)     document.title = settings.logoText + ' — Login';
+
+    function doLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true;
+      btn.textContent = 'Verificando…';
+
+      setTimeout(() => {
+        const user = document.getElementById('username').value;
+        const pwd  = document.getElementById('password').value;
+        if (Auth.login(user, pwd)) {
+          window.location.href = 'dashboard.html';
+        } else {
+          document.getElementById('loginError').classList.add('show');
+          document.getElementById('password').classList.add('error');
+          document.getElementById('password').value = '';
+          btn.disabled = false;
+          btn.textContent = 'Entrar';
+        }
+      }, 400);
+    }
+  </script>
+</body>
+</html>

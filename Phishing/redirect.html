@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecionando…</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { background: #f3f2f1; }
+    .redirect-card p { margin-top: 8px; }
+    .redirect-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="redirect-page">
+    <div class="redirect-card">
+
+      <div class="redirect-icon loading" id="redirectIcon">
+        <div class="spinner"></div>
+      </div>
+
+      <h2 id="redirectTitle">Aguarde um momento…</h2>
+      <p id="redirectMsg">Você está sendo redirecionado.</p>
+
+      <p class="redirect-subtitle">
+        Este é um exercício interno de conscientização sobre segurança.<br>
+        Sua ação foi registrada para fins educacionais.
+      </p>
+
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/redirect.js"></script>
+</body>
+</html>
